@@ -8,32 +8,25 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-public class RecV {
+public class Send {
     public final static String QUEUE_NAME="hello";
     static Log log = LogFactory.getLog(RecV.class);
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("192.168.112.128");
-
-
+        factory.setUsername("guest");
+        factory.setPassword("guest");
+        factory.setPort(5621);
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-//        Map<String,Object> map = new HashMap<String,Object>();
-//        map.put("1",new String("the one value"));
-//        map.put("2",new String("the two value"));
-//        map.put("3",new String("the three value"));
+        String message = "This is my first message";
         channel.queueDeclare(QUEUE_NAME,false,false,false,null);
-        log.info("[*] Waiting for messages,To exit precc Ctrl+C");
-        //消息回调
-        DeliverCallback deliverCallback =(consumerTag,delivery)->{
-            String message = new String(delivery.getBody(),"UTF-8");
-            log.info("[X] Received'"+message+"'");
-        };
-        channel.basicConsume(QUEUE_NAME,true,deliverCallback,consumerTag->{});
-
+        channel.basicPublish("",QUEUE_NAME,null,message.getBytes(StandardCharsets.UTF_8));
+        log.info("[x] send '"+message+"'");
     }
 }

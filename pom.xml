@@ -40,6 +40,13 @@
             <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.oracle.weblogic/wlthint3client -->
+        <dependency>
+            <groupId>com.oracle.weblogic</groupId>
+            <artifactId>wlthint3client</artifactId>
+            <version>10.3.6.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
